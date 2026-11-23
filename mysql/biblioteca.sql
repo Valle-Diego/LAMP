@@ -1,13 +1,14 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Linux (x86_64)
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.5.29-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: biblioteca
 -- ------------------------------------------------------
--- Server version	8.0.34-0ubuntu0.22.04.1
+-- Server version	10.4.34-MariaDB-1:10.4.34+maria~ubu2004
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,15 +22,15 @@
 
 DROP TABLE IF EXISTS `autori`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `autori` (
-  `id_autore` int NOT NULL AUTO_INCREMENT,
+  `id_autore` int(11) NOT NULL AUTO_INCREMENT,
   `nome_autore` varchar(50) NOT NULL,
   `nazionalita` varchar(50) DEFAULT NULL,
   `data_nascita` date DEFAULT NULL,
   `data_morte` date DEFAULT NULL,
   PRIMARY KEY (`id_autore`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,12 +49,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `categorie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categorie` (
-  `id_categoria` int NOT NULL AUTO_INCREMENT,
+  `id_categoria` int(11) NOT NULL AUTO_INCREMENT,
   `nome_categoria` varchar(50) NOT NULL,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,19 +73,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `libri`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `libri` (
-  `id_libro` int NOT NULL AUTO_INCREMENT,
+  `id_libro` int(11) NOT NULL AUTO_INCREMENT,
   `titolo` varchar(100) NOT NULL,
-  `id_autore` int DEFAULT NULL,
-  `id_categoria` int DEFAULT NULL,
-  `anno_pubblicazione` int DEFAULT NULL,
+  `id_autore` int(11) DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `anno_pubblicazione` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_libro`),
   KEY `id_autore` (`id_autore`),
   KEY `id_categoria` (`id_categoria`),
   CONSTRAINT `libri_ibfk_1` FOREIGN KEY (`id_autore`) REFERENCES `autori` (`id_autore`),
   CONSTRAINT `libri_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categorie` (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,4 +107,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-25 13:28:15
+-- Dump completed on 2026-11-13  7:59:51
