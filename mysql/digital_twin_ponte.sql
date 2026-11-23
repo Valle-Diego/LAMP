@@ -31,10 +31,16 @@ CREATE TABLE `ALLARME` (
   `descrizione` text DEFAULT NULL,
   `stato` varchar(30) DEFAULT NULL,
   `data_risoluzione` datetime DEFAULT NULL,
-  `id_misurazione` bigint(20) DEFAULT NULL,
+  `id_misurazione` bigint(20) NOT NULL,
   `id_soglia` int(11) DEFAULT NULL,
   `id_tecnico` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_allarme`)
+  PRIMARY KEY (`id_allarme`),
+  KEY `id_misurazione` (`id_misurazione`),
+  KEY `id_soglia` (`id_soglia`),
+  KEY `id_tecnico` (`id_tecnico`),
+  CONSTRAINT `ALLARME_ibfk_1` FOREIGN KEY (`id_misurazione`) REFERENCES `MISURAZIONE` (`id_misurazione`) ON UPDATE CASCADE,
+  CONSTRAINT `ALLARME_ibfk_2` FOREIGN KEY (`id_soglia`) REFERENCES `SOGLIA` (`id_soglia`) ON UPDATE CASCADE,
+  CONSTRAINT `ALLARME_ibfk_3` FOREIGN KEY (`id_tecnico`) REFERENCES `TECNICO` (`id_tecnico`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,9 +68,13 @@ CREATE TABLE `INTERVENTO` (
   `descrizione` text DEFAULT NULL,
   `esito` text DEFAULT NULL,
   `stato` varchar(30) DEFAULT NULL,
-  `id_ponte` int(11) DEFAULT NULL,
-  `id_tecnico` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_intervento`)
+  `id_ponte` int(11) NOT NULL,
+  `id_tecnico` int(11) NOT NULL,
+  PRIMARY KEY (`id_intervento`),
+  KEY `id_ponte` (`id_ponte`),
+  KEY `id_tecnico` (`id_tecnico`),
+  CONSTRAINT `INTERVENTO_ibfk_1` FOREIGN KEY (`id_ponte`) REFERENCES `PONTE` (`id_ponte`) ON UPDATE CASCADE,
+  CONSTRAINT `INTERVENTO_ibfk_2` FOREIGN KEY (`id_tecnico`) REFERENCES `TECNICO` (`id_tecnico`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,7 +99,10 @@ CREATE TABLE `INTERVENTO_SENSORE` (
   `id_sensore` int(11) NOT NULL,
   `descrizione_intervento` text DEFAULT NULL,
   `esito_sensore` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id_intervento`,`id_sensore`)
+  PRIMARY KEY (`id_intervento`,`id_sensore`),
+  KEY `id_sensore` (`id_sensore`),
+  CONSTRAINT `INTERVENTO_SENSORE_ibfk_1` FOREIGN KEY (`id_intervento`) REFERENCES `INTERVENTO` (`id_intervento`) ON UPDATE CASCADE,
+  CONSTRAINT `INTERVENTO_SENSORE_ibfk_2` FOREIGN KEY (`id_sensore`) REFERENCES `SENSORE` (`id_sensore`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -115,8 +128,10 @@ CREATE TABLE `MISURAZIONE` (
   `valore` decimal(15,6) DEFAULT NULL,
   `qualita_dato` varchar(20) DEFAULT NULL,
   `errore` varchar(255) DEFAULT NULL,
-  `id_sensore` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_misurazione`)
+  `id_sensore` int(11) NOT NULL,
+  PRIMARY KEY (`id_misurazione`),
+  KEY `id_sensore` (`id_sensore`),
+  CONSTRAINT `MISURAZIONE_ibfk_1` FOREIGN KEY (`id_sensore`) REFERENCES `SENSORE` (`id_sensore`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -172,9 +187,13 @@ CREATE TABLE `REPORT` (
   `periodo_fine` datetime DEFAULT NULL,
   `tipologia` varchar(50) DEFAULT NULL,
   `percorso_file` varchar(255) DEFAULT NULL,
-  `id_ponte` int(11) DEFAULT NULL,
-  `id_tecnico` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_report`)
+  `id_ponte` int(11) NOT NULL,
+  `id_tecnico` int(11) NOT NULL,
+  PRIMARY KEY (`id_report`),
+  KEY `id_ponte` (`id_ponte`),
+  KEY `id_tecnico` (`id_tecnico`),
+  CONSTRAINT `REPORT_ibfk_1` FOREIGN KEY (`id_ponte`) REFERENCES `PONTE` (`id_ponte`) ON UPDATE CASCADE,
+  CONSTRAINT `REPORT_ibfk_2` FOREIGN KEY (`id_tecnico`) REFERENCES `TECNICO` (`id_tecnico`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -202,10 +221,14 @@ CREATE TABLE `SENSORE` (
   `data_installazione` date DEFAULT NULL,
   `stato` varchar(30) DEFAULT NULL,
   `frequenza` int(11) DEFAULT NULL,
-  `id_ponte` int(11) DEFAULT NULL,
-  `id_tipologia` int(11) DEFAULT NULL,
+  `id_ponte` int(11) NOT NULL,
+  `id_tipologia` int(11) NOT NULL,
   PRIMARY KEY (`id_sensore`),
-  UNIQUE KEY `codice` (`codice`)
+  UNIQUE KEY `codice` (`codice`),
+  KEY `id_ponte` (`id_ponte`),
+  KEY `id_tipologia` (`id_tipologia`),
+  CONSTRAINT `SENSORE_ibfk_1` FOREIGN KEY (`id_ponte`) REFERENCES `PONTE` (`id_ponte`) ON UPDATE CASCADE,
+  CONSTRAINT `SENSORE_ibfk_2` FOREIGN KEY (`id_tipologia`) REFERENCES `TIPOLOGIA_SENSORE` (`id_tipologia`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -232,8 +255,10 @@ CREATE TABLE `SOGLIA` (
   `livello_criticita` varchar(30) DEFAULT NULL,
   `data_inizio` datetime DEFAULT NULL,
   `data_fine` datetime DEFAULT NULL,
-  `id_sensore` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_soglia`)
+  `id_sensore` int(11) NOT NULL,
+  PRIMARY KEY (`id_soglia`),
+  KEY `id_sensore` (`id_sensore`),
+  CONSTRAINT `SOGLIA_ibfk_1` FOREIGN KEY (`id_sensore`) REFERENCES `SENSORE` (`id_sensore`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -310,4 +335,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-11-23 13:22:32
+-- Dump completed on 2026-11-23 14:07:31
